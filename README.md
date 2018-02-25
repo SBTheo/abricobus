@@ -4,6 +4,8 @@
 
 # Schema : [DHT11](./Schema/dht11.qet)
 
+# Serié : [Docuemantation](./Serie/doc.md)
+
 ## Liens :
 * [[Tuto] Utiliser un capteur température humidité](https://letmeknow.fr/blog/2013/11/06/tuto-utiliser-un-capteur-temperature-humidite/)
 * [Utiliser un capteur de température et d'humidité DHT11 / DHT22 avec une carte Arduino / Genuino](https://www.carnetdumaker.net/articles/utiliser-un-capteur-de-temperature-et-dhumidite-dht11-dht22-avec-une-carte-arduino-genuino/)
