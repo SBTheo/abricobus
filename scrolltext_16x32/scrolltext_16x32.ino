@@ -18,7 +18,7 @@ RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, true);
 // Arduino Uno -- only a handful of free bytes remain.  Even the
 // following string needs to go in PROGMEM:
 
-const char str[] PROGMEM = "Le bus arrive dans 5 minutes";
+const char str[] PROGMEM = "Le bus arrive dans";
 int    textX   = matrix.width(),
        textMin = sizeof(str) * -12,
        hue     = 0;
@@ -57,27 +57,33 @@ void loop() {
   // Clear background
   matrix.fillScreen(0);
 
-//  // Bounce three balls around
-//  for(i=0; i<3; i++) {
-//    // Draw 'ball'
-//    matrix.fillCircle(ball[i][0], ball[i][1], 5, pgm_read_word(&ballcolor[i]));
-//    // Update X, Y position
-//    ball[i][0] += ball[i][2];
-//    ball[i][1] += ball[i][3];
-//    // Bounce off edges
-//    if((ball[i][0] == 0) || (ball[i][0] == (matrix.width() - 1)))
-//      ball[i][2] *= -1;
-//    if((ball[i][1] == 0) || (ball[i][1] == (matrix.height() - 1)))
-//      ball[i][3] *= -1;
-//  }
-
   // Draw big scrolly text on top
   matrix.setTextColor(matrix.ColorHSV(hue, 255, 255, true));
   matrix.setCursor(textX, 1);
   matrix.print(F2(str));
 
   // Move text left (w/wrap), increase hue
-  if((--textX) < textMin) textX = matrix.width();
+  if((textX--) < textMin)
+  { 
+    matrix.fillScreen(0);
+    matrix.setCursor(0, 1);   // start at one pixel left, with one pixel of spacing
+    int donneesALire = Serial.available(); //lecture du nombre de caractères disponibles dans le buffer
+    if(donneesALire > 0) //si le buffer n'est pas vide
+    {
+      //Il y a des données, on les lit et on fait du traitement
+      char li = Serial.read(); 
+      while(li != '@')
+      {
+        matrix.print(li);
+        li = Serial.read();
+      }
+      /*matrix.print(li);
+      matrix.print('m');*/
+      matrix.swapBuffers(false);
+      delay(5000);
+    }
+    textX = matrix.width();
+  }
 //  hue += 7;
 //  if(hue >= 1536) hue -= 1536;
 

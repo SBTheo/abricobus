@@ -12,7 +12,7 @@
 # Code :
 
 * [RPi : serialtest.py](./serialtest.py)
-* [Arduino : scrolltext_16x32](../scrolltext_16x32.ino)
+* [Arduino : scrolltext_16x32](../scrolltext_16x32/scrolltext_16x32.ino)
 
 # RPi modification
 
