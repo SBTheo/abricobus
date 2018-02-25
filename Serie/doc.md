@@ -13,3 +13,19 @@
 
 * [RPi : serialtest.py](./serialtest.py)
 * [Arduino : scrolltext_16x32](../scrolltext_16x32.ino)
+
+# RPi modification
+
+## `/boot/config.txt`
+
+Add :
+```
+dtoberlay=pi3-disable-bt
+enable_uart=1
+```
+
+## `/boot/cmdline.txt`
+Change :
+```
+console=tty1
+```
