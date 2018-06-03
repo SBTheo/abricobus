@@ -77,6 +77,7 @@ void loop() {
   matrix.setTextColor(matrix.ColorHSV(hue, 255, 255, true));
   matrix.setCursor(textX, 1);
   matrix.print(F2(str));
+  delay(10);
 
   // bouger le texte vers la gauche (w/wrap), augmenter la teinte
   if((textX--) < textMin)
@@ -84,20 +85,42 @@ void loop() {
     matrix.fillScreen(0);
     matrix.setCursor(0, 1);   // commencer par écrire à partir de la gauche
     int donneesALire = Serial.available(); //lecture du nombre de caractères disponibles dans le buffer série RPi <-> arduino
+    Serial.println(donneesALire);
     if(donneesALire > 0) //si le buffer n'est pas vide
     {
       //Il y a des données, on les lit tant qu'on a pas le caractère de fin '@' et on l'affiche sur la matrice
-      char li = Serial.read(); 
-      while(li != '@')
+      char li = Serial.read();
+      if(li == 'T')
       {
-        matrix.print(li);
         li = Serial.read();
+        while(li != '_')
+        {
+          matrix.print(li);
+          li = Serial.read();
+        }
+        matrix.swapBuffers(false);
+        delay(2000);
+        matrix.fillScreen(0);
+        matrix.setCursor(0, 1);
+        li = Serial.read();
+        while(li != '@')
+        {
+          matrix.print(li);
+          li = Serial.read();
+        }
+        matrix.swapBuffers(false);
+        delay(5000);
       }
-      //on allume et on éteind la LED de contrôle
-      digitalWrite(13, HIGH);
-      matrix.swapBuffers(false);
-      delay(5000);
-      digitalWrite(13, LOW);
+      else
+      {
+        while(li != '@')
+        {
+          matrix.print(li);
+          li = Serial.read();
+        }
+        matrix.swapBuffers(false);
+        delay(5000);
+      }
     }
     textX = matrix.width();
   }
@@ -108,13 +131,13 @@ void loop() {
   raw= analogRead(analogPin);
   if(raw) 
   {
-	  //on divise la valeur de la photoresistance par 1024.0
+    //on divise la valeur de la photoresistance par 1024.0
           buffer= raw * Vin;
           Vout= (buffer)/1024.0;
           buffer= (Vin/Vout) -1; 
           R2= R1 * buffer;
-	  //on envoit la valeur vers le RPi via le port série
+    //on envoit la valeur vers le RPi via le port série
           Serial.println(R2);
-          delay(200);
+          //delay(200);
   }
 }
